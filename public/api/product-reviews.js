@@ -1,27 +1,13 @@
 const express = require('express');
-const {Secret} = require('../config');
 const morgan = require('morgan');
-const jwt = require('jsonwebtoken');
 const User = require('../models/users');
+const {authMiddleware} = require('../lib/auth');
 const PORT = process.env.PORT || 3027;
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
-
-app.set('superSecret', Secret);
-
-const con = mysql.createConnection(MysqlConfig);
-const sql = "select * from product_reviews";
-
-con.connect(function(err) {
-  if (err) throw err;
-  con.query(sql, function(err, result) {
-    if (err) throw err;
-  });
-});
-
 
 app.get('/', function(req, res) {
   res.send('Hello! The API is running at http://localhost:' + PORT);
@@ -55,13 +41,13 @@ apiRoutes.post('/authenticate', function(req, res) {
     if (err) throw err;
 
     if (!user) {
-      res.json({
+      res.status(401).json({
         success: false,
         message: 'Authentication failed. User not found.'
       });
     } else if (user) {
       if (user.password != req.body.password) {
-        res.json({
+        res.status(401).json({
           success: false,
           message: 'Authentication failed. Wrong password.'
         });
@@ -69,10 +55,7 @@ apiRoutes.post('/authenticate', function(req, res) {
         const payload = {
           admin: user.admin
         };
-        var token = jwt.sign(payload, app.get('superSecret'), {
-          expiresIn: 1440
-        });
-
+        let token = Auth.sign(payload);
         res.json({
           success: true,
           message: 'Enjoy your token!',
@@ -83,28 +66,7 @@ apiRoutes.post('/authenticate', function(req, res) {
   });
 });
 
-apiRoutes.use(function(req, res, next) {
-  const token = req.body.token || req.query.token || req.headers['x-access-token'];
-  if (token) {
-    jwt.verify(token, Secret, function(err, decoded) {
-      if (err) {
-        return res.json({
-          success: false,
-          message: 'Failed to authenticate token.'
-        });
-      } else {
-        req.decoded = decoded;
-        next();
-      }
-    });
-
-  } else {
-    return res.status(403).send({
-      success: false,
-      message: 'No token provided.'
-    });
-  }
-});
+apiRoutes.use(authMiddleware);
 
 apiRoutes.get('/', function(req, res) {
   res.json({
