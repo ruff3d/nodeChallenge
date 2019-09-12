@@ -7,7 +7,6 @@ module.exports = {
     user: "root",
     password: "rootroot",
     database: "product",
-    insecureAuth: true
   },
     Secret: 'supersecret'
 };

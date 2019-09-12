@@ -4,7 +4,7 @@ class ProductReviews extends mysqlStore.Model {
     static init(mysqlStore, DataTypes) {
         return super.init({
                 id: {type: DataTypes.INTEGER, autoIncrement: true, unique: true},
-                productId: DataTypes.STRING,
+                product_id: DataTypes.STRING,
                 description: DataTypes.STRING,
                 user: DataTypes.STRING
             },

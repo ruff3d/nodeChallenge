@@ -32,6 +32,7 @@ app.get('/setup', function(req, res) {
 
 const apiRoutes = express.Router();
 
+app.use('/api', apiRoutes);
 apiRoutes.post('/authenticate', function(req, res) {
 
   User.findOne({
@@ -80,7 +81,6 @@ apiRoutes.get('/users', function(req, res) {
   });
 });
 
-app.use('/api', apiRoutes);
 
 app.get('/api/review/:product_id', (req, res) => {
   var id = req.params.product_id;
@@ -93,8 +93,8 @@ app.get('/api/review/:product_id', (req, res) => {
 });
 
 app.post('/api/review/', (req, res) => {
-  var input = JSON.parse(JSON.stringify(req.body));
-  var data = {
+  let input = req.body;
+  let data = {
     product_id: input.product_id,
     avg_review_score: input.avg_review_score,
     num_of_reviews: input.num_of_reviews
@@ -108,7 +108,7 @@ app.post('/api/review/', (req, res) => {
 });
 
 app.put('/api/review/:product_id', (req, res) => {
-  var input = JSON.parse(JSON.stringify(req.body));
+  var input = req.body;
   var id = req.params.product_id;
   var data = {
     avg_review_score: input.avg_review_score,
@@ -131,7 +131,4 @@ app.delete('/api/review/:product_id', (req, res) => {
     });
   });
 });
-
-app.use(express.static(__dirname + '/'))
-app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`))
 module.exports = app;
