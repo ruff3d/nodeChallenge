@@ -1,17 +1,17 @@
 const express = require('express');
 const {MongodbConfig, MysqlConfig, Secret} = require('../config');
 const mysql = require('mysql');
-const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
-
+const PORT = process.env.PORT || 3027;
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(morgan('dev'));
 
-const PORT = process.env.PORT || 3027;
 mongoose.connect(MongodbConfig.database);
 app.set('superSecret', Secret);
 
@@ -25,11 +25,6 @@ con.connect(function(err) {
   });
 });
 
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-app.use(bodyParser.json());
-app.use(morgan('dev'));
 
 app.get('/', function(req, res) {
   res.send('Hello! The API is running at http://localhost:' + PORT);
