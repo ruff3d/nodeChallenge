@@ -1,8 +1,6 @@
 const express = require('express');
-const {MongodbConfig, MysqlConfig, Secret} = require('../config');
-const mysql = require('mysql');
+const {Secret} = require('../config');
 const morgan = require('morgan');
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 const PORT = process.env.PORT || 3027;
@@ -12,7 +10,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 
-mongoose.connect(MongodbConfig.database);
 app.set('superSecret', Secret);
 
 const con = mysql.createConnection(MysqlConfig);
