@@ -1,4 +1,3 @@
-var app = require('./product-reviews');
 const express = require('express')
 const product = express()
 product.use(express.json());
