@@ -1,7 +1,7 @@
-const express = require('express')
-const product = express()
+const express = require('express');
+const product = express();
 product.use(express.json());
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
 const PORT = process.env.PORT || 3028;
 
 function get(url) {
@@ -27,6 +27,6 @@ product.get('/api/product/:product_id', (req, res) => {
     .catch(err => res.send('Ops, something has gone wrong'))
 });
 
-product.use(express.static(__dirname + '/'))
+product.use(express.static(__dirname + '/'));
 product.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 module.exports = product;
