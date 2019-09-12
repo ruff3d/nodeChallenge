@@ -1,28 +1,22 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const {MongodbConfig, MysqlConfig, Secret} = require('../config');
+const mysql = require('mysql');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const User = require('../models/users');
+
+
+const app = express();
 app.use(express.json());
 
-var mysql = require('mysql');
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
-var mongoose = require('mongoose');
-
-var jwt = require('jsonwebtoken');
-var config = require('../config');
-var User = require('../models/users');
-
 const PORT = process.env.PORT || 3027;
-mongoose.connect(config.database);
-app.set('superSecret', config.secret);
+mongoose.connect(MongodbConfig.database);
+app.set('superSecret', Secret);
 
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "rootroot",
-  database: "product",
-  insecureAuth: true
-});
-var sql = "select * from product_reviews";
+const con = mysql.createConnection(MysqlConfig);
+const sql = "select * from product_reviews";
 
 con.connect(function(err) {
   if (err) throw err;
@@ -35,7 +29,6 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(bodyParser.json());
-
 app.use(morgan('dev'));
 
 app.get('/', function(req, res) {
@@ -59,7 +52,7 @@ app.get('/setup', function(req, res) {
   });
 });
 
-var apiRoutes = express.Router();
+const apiRoutes = express.Router();
 
 apiRoutes.post('/authenticate', function(req, res) {
 
@@ -99,9 +92,9 @@ apiRoutes.post('/authenticate', function(req, res) {
 });
 
 apiRoutes.use(function(req, res, next) {
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  const token = req.body.token || req.query.token || req.headers['x-access-token'];
   if (token) {
-    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+    jwt.verify(token, Secret, function(err, decoded) {
       if (err) {
         return res.json({
           success: false,
