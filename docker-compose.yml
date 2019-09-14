@@ -1,0 +1,34 @@
+services:
+
+    reviews:
+        build: .
+        image: node:adidas
+        command: npm run start:revirews
+        environment:
+            PORT: 3027
+        expose:
+            - 3027:3027
+        depends_on:
+            - mysql
+            - mongo
+
+    products:
+        image: node:adidas
+        environment:
+            PORT: 3029
+        depends_on:
+            - reviews
+
+    mysql:
+        image: mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: rootroot
+            MYSQL_DATABASE: product
+
+    mongo:
+        image: mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: rootroot

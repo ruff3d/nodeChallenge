@@ -29,7 +29,7 @@
         "sequelize-cli": "^5.5.1"
     },
     "scripts": {
-        "start": "NODE_ENV=dev node public/reviews-server.js && node --experimental-modules --es-module-specifier-resolution=node public/product-server.js",
+        "start": "NODE_ENV=dev node src/reviews-server.js && node src/product-server.js",
         "test": "mocha --timeout 10000"
     }
 }

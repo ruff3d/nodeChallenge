@@ -34,7 +34,5 @@ class ProductReviews extends Model {
     static async getReviews(){
         await this.findAll();
     }
-
 }
-
-module.exports = { Reviews : ProductReviews.init(connection, Types)};
+module.exports = ProductReviews.init(connection, Types);

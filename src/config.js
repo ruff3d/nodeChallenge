@@ -1,9 +1,9 @@
 module.exports = {
   MongodbConfig: {
-    database: 'mongodb://username:password@localhost:15283/database'
+    database: 'mongodb://root:rootroot@localhost:15283/database'
   },
   MysqlConfig: {
-    host: "localhost",
+    host: "mysql",
     user: "root",
     password: "rootroot",
     database: "product",

@@ -6,7 +6,7 @@ module.exports = class ReviewsController {
         this.initRoutes(router);
     }
 
-    initRoutes(router){
+    initRoutes(router) {
         router.use(authMiddleware);
         router.get('/review/:product_id', this.getReview);
         router.post('/review/', this.addReview);
@@ -71,7 +71,7 @@ module.exports = class ReviewsController {
         }
     }
 
-   async deleteReview(req, res) {
+    async deleteReview(req, res) {
         let product_id = req.params.product_id;
         try {
             await Reviews.deleteReview(product_id);
