@@ -1,3 +1,4 @@
+version: '3.7'
 services:
 
     reviews:
@@ -5,8 +6,9 @@ services:
         image: node:adidas
         command: npm run start:revirews
         environment:
+            NODE_ENV: development
             PORT: 3027
-        expose:
+        ports:
             - 3027:3027
         depends_on:
             - mysql
@@ -14,8 +16,12 @@ services:
 
     products:
         image: node:adidas
+        command: npm run start:product
         environment:
+            NODE_ENV: development
             PORT: 3029
+        ports:
+            - 3029:3029
         depends_on:
             - reviews
 
