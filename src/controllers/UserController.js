@@ -1,5 +1,5 @@
-import {Users} from "../models/users";
-import {hash, compare, Auth} from "../lib/auth";
+const {Users} = require("../models/users");
+const {hash, compare, Auth} = require("../lib/auth");
 
 module.exports = class UserController {
     constructor(router) {
