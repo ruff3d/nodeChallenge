@@ -1,8 +1,8 @@
 const {connection, Model, Types} = require("../store/mysqlStore");
-connection.authenticate();
 
 class ProductReviews extends Model {
     static init(connection, Types) {
+        connection.authenticate();
         return super.init({
                 id: {type: Types.INT, autoIncrement: true, unique: true},
                 product_id: Types.STRING,

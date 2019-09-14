@@ -7,11 +7,11 @@ const UserModel = connection.model('User', new Schema({
 }));
 
 export class Users {
-    async createUser(name, password, admin){
+    static async createUser(name, password, admin){
         await UserModel.create({name, password, admin})
     }
 
-    async editUser(name, password, admin){
+    static async editUser(name, password, admin){
         let user = await UserModel.where({ name: name }).findOne();
         user.name = name || user.name;
         user.password = password || user.password;
@@ -19,15 +19,15 @@ export class Users {
         user.save();
     }
 
-    async deleteUser(name){
+    static async deleteUser(name){
         await UserModel.where({ name: name }).deleteOne()
     }
 
-    async getUser(name){
+    static async getUser(name){
         await UserModel.where({ name: name }).findOne()
     }
 
-    async getUsers(){
+    static async getUsers(){
         await UserModel.findAll();
     }
 }
