@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 const fetch = require('node-fetch');
-const PORT = process.env.PORT || 3028;
 
 function get(url) {
   return new Promise((resolve, reject) => {

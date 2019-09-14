@@ -1,6 +1,6 @@
-const mongoStore = require('../store/mongoStore');
+import {connection, Schema} from "../store/mongoStore";
 
-module.exports = mongoStore.model('User', new mongoStore.Schema({
+export const User = connection.model('User', new Schema({
     name: String,
     password: String,
     admin: Boolean 

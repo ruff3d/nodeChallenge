@@ -1,7 +1,7 @@
-const mysqlStore = require('../store/mysqlStore');
+import {connection, Model} from "../store/mysqlStore";
 
-class ProductReviews extends mysqlStore.Model {
-    static init(mysqlStore, DataTypes) {
+class ProductReviews extends Model {
+    static init(connection, DataTypes) {
         return super.init({
                 id: {type: DataTypes.INTEGER, autoIncrement: true, unique: true},
                 product_id: DataTypes.STRING,
@@ -10,9 +10,9 @@ class ProductReviews extends mysqlStore.Model {
             },
             {
                 tableName: "product_reviews",
-                mysqlStore
+                connection
             });
     }
 }
 
-module.exports = ProductReviews.init(mysqlStore, mysqlStore);
+module.exports = ProductReviews.init(connection, connection.DataTypes);

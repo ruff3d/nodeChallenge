@@ -1,7 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
-const User = require('../models/users');
-const {authMiddleware} = require('../lib/auth');
+
+import {User} from '../models/users';
+import {authMiddleware} from '../lib/auth';
 const PORT = process.env.PORT || 3027;
 
 const app = express();

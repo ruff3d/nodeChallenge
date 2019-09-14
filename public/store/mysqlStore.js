@@ -1,13 +1,14 @@
 const Sequelize = require('sequelize');
-const {MysqlConfig} = require('../config');
-const sequelize = new Sequelize(
-    MysqlConfig.database,
-    MysqlConfig.user,
-    MysqlConfig.password,
+import config from '../config';
+
+export const connection = new Sequelize(
+    config.MysqlConfig.database,
+    config.MysqlConfig.user,
+    config.MysqlConfig.password,
     {
-        host: MysqlConfig.host,
+        host: config.MysqlConfig.host,
         dialect: 'mysql'
     }
 );
 
-module.exports = sequelize;
+export const Model =  Sequelize.Model;

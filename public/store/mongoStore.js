@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
-const {MongodbConfig} = require('../config');
+import config from '../config';
 
-module.exports = mongoose.connect(MongodbConfig.database);
+export const connection = mongoose.connect(config.MongodbConfig.database);
+export const Schema = mongoose.Schema;
+

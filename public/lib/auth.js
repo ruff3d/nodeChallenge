@@ -1,19 +1,19 @@
-const {Secret} = require('../config');
+import config from "../config";
 const jwt = require('jsonwebtoken');
 
-class Auth {
+export class Auth {
     static sign(payload) {
-        return jwt.sign(payload, Secret, {
+        return jwt.sign(payload, config.Secret, {
             expiresIn: 1440
         });
     }
 
     static verify(token, callback) {
-        return jwt.verify(token, Secret, callback);
+        return jwt.verify(token, config.Secret, callback);
     }
 }
 
-function authMiddleware(req, res, next)  {
+export function authMiddleware(req, res, next)  {
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
     if (token) {
         Auth.verify(token, (err, decoded) => {
@@ -35,9 +35,3 @@ function authMiddleware(req, res, next)  {
         });
     }
 }
-
-
-module.exports = {
-    Auth,
-    authMiddleware
-};
