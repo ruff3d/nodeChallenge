@@ -1,4 +1,4 @@
-import app from './api/product-reviews';
+const app = require("./api/product-service");
 const PORT = process.env.PORT || 3029;
 
 app.listen(PORT, function() {

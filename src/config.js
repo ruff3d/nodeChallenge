@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   MongodbConfig: {
     database: 'mongodb://username:password@localhost:15283/database'
   },

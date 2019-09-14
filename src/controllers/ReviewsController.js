@@ -1,16 +1,13 @@
-import {Users} from "../models/users";
-import {Reviews} from "../models/reviews";
-import {authMiddleware, hash, compare, Auth} from "../lib/auth";
+const Reviews = require("../models/reviews");
+const {authMiddleware} = require("../lib/auth");
 
-export default class ReviewsController {
+module.exports = class ReviewsController {
     constructor(router) {
         this.initRoutes(router);
     }
 
     initRoutes(router){
-        router.post('/authenticate', this.authenticate);
         router.use(authMiddleware);
-        router.get('/users', this.getUsers);
         router.get('/review/:product_id', this.getReview);
         router.post('/review/', this.addReview);
         router.put('/review/:product_id', this.editReview);
@@ -19,40 +16,10 @@ export default class ReviewsController {
         router.get('/', this.home);
     }
 
-    async authenticate(req, res) {
-        let user = await Users.getUser(req.body.name);
-        if (!user) {
-            res.status(401).json({
-                success: false,
-                message: 'Authentication failed. User not found.'
-            });
-        }
-        if (await compare(res.body.password, user.password)) {
-            const payload = {
-                admin: user.admin
-            };
-            let token = Auth.sign(payload);
-            res.json({
-                success: true,
-                message: 'Enjoy your token!',
-                token: token
-            });
-        }
-        res.status(401).json({
-            success: false,
-            message: 'Authentication failed. Wrong password.'
-        });
-    }
-
     home(req, res) {
         res.json({
             message: 'Welcome to the product reviews API'
         });
-    }
-
-    async getUsers(req, res) {
-        let users = await Users.getUsers();
-        res.json(users);
     }
 
     async getReview(req, res) {
@@ -116,4 +83,4 @@ export default class ReviewsController {
             });
         }
     }
-}
+};
