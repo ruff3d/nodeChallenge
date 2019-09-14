@@ -29,8 +29,8 @@
         "sequelize-cli": "^5.5.1"
     },
     "scripts": {
-        "start:revirews": "NODE_ENV=dev node src/reviews-server.js",
-        "start:product": "NODE_ENV=dev node src/reviews-product.js",
+        "start:revirews": "ode src/reviews-server.js",
+        "start:product": "node src/reviews-product.js",
         "test": "mocha --timeout 10000"
     }
 }
