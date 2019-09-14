@@ -8,10 +8,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 
-app.get('/', function(req, res) {
-  res.send('Hello! The API is running at http://localhost:' + PORT);
-});
-
 const apiRoutes = express.Router();
 new UserController(apiRoutes);
 new ReviewsController(apiRoutes);
