@@ -1,6 +1,6 @@
-const product = require('./api/product-service');
+import app from './api/product-reviews';
 const PORT = process.env.PORT || 3029;
 
-product.listen(PORT, function() {
+app.listen(PORT, function() {
   console.log('Express server for product service listening on port ' + PORT);
 });

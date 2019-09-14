@@ -1,5 +1,6 @@
 import config from "../config";
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 export class Auth {
     static sign(payload) {
@@ -34,4 +35,13 @@ export function authMiddleware(req, res, next)  {
             message: 'No token provided.'
         });
     }
+}
+
+export async function hash(value){
+    let salt = await bcrypt.genSalt(10);
+    await bcrypt.hash(value, salt)
+}
+
+export async function compare(value, hash){
+    await bcrypt.compare(value, hash);
 }

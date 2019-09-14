@@ -13,6 +13,27 @@ class ProductReviews extends Model {
                 connection
             });
     }
+
+    async static updateReview(product_id, avg_review_score, num_of_reviews){
+        await this.upsert({
+            product_id,
+            avg_review_score,
+            num_of_reviews
+        });
+    }
+
+    async static deleteReview(product_id){
+        await this.destroy({where: {product_id: product_id}});
+    }
+
+    async static getReview(product_id){
+        await this.findOne({where: {product_id: product_id}});
+    }
+
+    async static getReviews(){
+        await this.findAll();
+    }
+
 }
 
-module.exports = ProductReviews.init(connection, connection.DataTypes);
+export const Reviews = ProductReviews.init(connection, connection.DataTypes);

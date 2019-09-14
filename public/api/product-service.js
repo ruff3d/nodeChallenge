@@ -23,4 +23,4 @@ app.get('/api/app/:product_id', (req, res) => {
     .catch(err => res.send('Ops, something has gone wrong'))
 });
 
-module.exports = app;
+export default app;
