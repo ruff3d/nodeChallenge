@@ -20,7 +20,8 @@
         "morgan": "^1.9.1",
         "mysql2": "^1.7.0",
         "node-fetch": "^2.6.0",
-        "sequelize": "^5.18.4"
+        "sequelize": "^5.18.4",
+        "winston": "^3.2.1"
     },
     "devDependencies": {
         "chai": "^4.2.0",
@@ -30,7 +31,7 @@
     },
     "scripts": {
         "start:revirews": "node src/reviews-server.js",
-        "start:product": "node src/reviews-product.js",
+        "start:product": "node src/product-server.js",
         "test": "mocha --timeout 10000"
     }
 }

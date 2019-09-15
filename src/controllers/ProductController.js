@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
 
 module.exports = class ProductController {
-    constructor(router) {
+    constructor(router, logger) {
+        this.logger = logger;
         this.initRoutes(router);
     }
 
