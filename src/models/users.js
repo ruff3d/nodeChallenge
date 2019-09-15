@@ -1,12 +1,12 @@
-const {connection, Schema} = require("../store/mongoStore");
+const {connection, Schema, Model} = require("../store/mongoStore");
 
-const UserModel = connection.model('User', new Schema({
+const UserModel = Model('User', new Schema({
     name: String,
     password: String,
     admin: Boolean
 }));
 
-export class Users {
+class Users {
     static async createUser(name, password, admin){
         await UserModel.create({name, password, admin})
     }
@@ -31,3 +31,5 @@ export class Users {
         await UserModel.findAll();
     }
 }
+
+module.exports = Users;

@@ -2,7 +2,7 @@ const config = require("../config");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-export class Auth {
+class Auth {
     static sign(payload) {
         return jwt.sign(payload, config.Secret, {
             expiresIn: 1440
@@ -14,7 +14,7 @@ export class Auth {
     }
 }
 
-export function authMiddleware(req, res, next)  {
+function authMiddleware(req, res, next)  {
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
     if (token) {
         Auth.verify(token, (err, decoded) => {
@@ -37,11 +37,18 @@ export function authMiddleware(req, res, next)  {
     }
 }
 
-export async function hash(value){
+async function hash(value){
     let salt = await bcrypt.genSalt(10);
     await bcrypt.hash(value, salt)
 }
 
-export async function compare(value, hash){
+async function compare(value, hash){
     await bcrypt.compare(value, hash);
 }
+
+module.exports = {
+    compare,
+    hash,
+    authMiddleware,
+    Auth
+};

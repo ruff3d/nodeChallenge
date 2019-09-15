@@ -4,14 +4,14 @@ class ProductReviews extends Model {
     static init(connection, Types) {
         connection.authenticate();
         return super.init({
-                id: {type: Types.INT, autoIncrement: true, unique: true},
+                id: {type: Types.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
                 product_id: Types.STRING,
                 description: Types.STRING,
                 user: Types.STRING
             },
             {
-                tableName: "product_reviews",
-                connection
+                sequelize: connection,
+                modelName: "product_reviews"
             });
     }
 
