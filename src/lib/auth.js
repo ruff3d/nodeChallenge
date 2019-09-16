@@ -37,9 +37,9 @@ function authMiddleware(req, res, next)  {
     }
 }
 
-async function hash(value){
+ async function hash(value){
     let salt = await bcrypt.genSalt(10);
-    await bcrypt.hash(value, salt)
+    return await bcrypt.hash(value, salt)
 }
 
 async function compare(value, hash){

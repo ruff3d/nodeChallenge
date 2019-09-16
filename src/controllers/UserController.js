@@ -1,4 +1,4 @@
-const {Users} = require("../models/users");
+const Users = require("../models/users");
 const {hash, compare, Auth} = require("../lib/auth");
 
 module.exports = class UserController {
@@ -43,28 +43,15 @@ module.exports = class UserController {
         res.json(users);
     }
 
-    async getReview(req, res) {
-        let product_id = req.params.product_id;
-        try {
-            let review = await Reviews.getReview(product_id);
-            res.json(review);
-        } catch {
-            res.status(500).json({
-                success: false,
-                message: 'Something went wrong!!'
-            });
-        }
-    }
-
     async setup(req, res) {
-        await Users.getUser({
+        await Users.addUser({
             name: 'default',
-            password: hash('password'),
+            password: await hash('password'),
             admin: true
         });
 
-        res.json({
-            success: true
+        res.send({
+            success: true,
         });
     }
 
@@ -72,7 +59,7 @@ module.exports = class UserController {
         if (req.body.name && req.body.password)
             await Users.getUser({
                 name: req.body.name,
-                password: hash(req.body.password),
+                password: await hash(req.body.password),
                 admin: req.body.admin || false
             });
 

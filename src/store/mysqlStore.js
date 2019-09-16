@@ -1,7 +1,7 @@
-const Sequelize = require("sequelize");
+const sequelize = require("sequelize");
 const {MysqlConfig} = require('../config');
 
-const connection = new Sequelize(
+const connection = new sequelize.Sequelize(
     MysqlConfig.database,
     MysqlConfig.user,
     MysqlConfig.password,
@@ -11,8 +11,11 @@ const connection = new Sequelize(
     }
 );
 
+connection.authenticate();
+
 module.exports = {
-    Model : Sequelize.Model,
-    Types : Sequelize.DataTypes,
-    connection: connection
+    Model : sequelize.Model,
+    Types : sequelize.DataTypes,
+    connection: connection,
+    sequelize: sequelize,
 };

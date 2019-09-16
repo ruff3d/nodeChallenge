@@ -3,31 +3,46 @@ services:
 
     reviews:
         build: .
-        image: node:adidas
-        command: npm run start:revirews
+        image: node-challenge:adidas
+        command: npm run start:reviews
         environment:
-            NODE_ENV: development
-            PORT: 3027
+            NODE_ENV: 'development'
+            PORT: '3027'
+            MONGO_HOST: 'mongo'
+            MONGO_DB_NAME: 'users'
+            MONGO_USER: 'root'
+            MONGO_PASSWORD: 'rootroot'
+            MYSQL_HOST: 'mysql'
+            MYSQL_USER: 'root'
+            MYSQL_PASSWORD: 'rootroot'
+            MYSQL_DB_NAME: 'product'
         ports:
             - 3027:3027
+        volumes:
+          - .:/app
         depends_on:
             - mysql
             - mongo
 
     products:
-        image: node:adidas
+        image: node-challenge:adidas
         command: npm run start:product
         environment:
             NODE_ENV: development
             PORT: 3029
         ports:
             - 3029:3029
+        volumes:
+            - .:/app
         depends_on:
             - reviews
 
     mysql:
         image: mysql
         restart: always
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+          - 3366:3306
         environment:
             MYSQL_ROOT_PASSWORD: rootroot
             MYSQL_DATABASE: product

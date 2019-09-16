@@ -1,17 +1,16 @@
-const {connection, Model, Types} = require("../store/mysqlStore");
+const {Model, sequelize, connection} = require("../store/mysqlStore");
 
-class ProductReviews extends Model {
-    static init(connection, Types) {
-        connection.authenticate();
+class Reviews extends Model {
+    static init(seq) {
         return super.init({
-                id: {type: Types.INTEGER, primaryKey: true, autoIncrement: true, unique: true},
-                product_id: Types.STRING,
-                description: Types.STRING,
-                user: Types.STRING
+                id: {type: sequelize.INTEGER, primaryKey: true},
+                product_id: sequelize.STRING,
+                description: sequelize.STRING,
+                user: sequelize.STRING,
             },
             {
-                sequelize: connection,
-                modelName: "product_reviews"
+                sequelize: seq,
+                modelName: "product_reviews",
             });
     }
 
@@ -35,4 +34,6 @@ class ProductReviews extends Model {
         await this.findAll();
     }
 }
-module.exports = ProductReviews.init(connection, Types);
+
+Reviews.init(connection);
+module.exports = Reviews;
