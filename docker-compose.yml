@@ -4,7 +4,7 @@ services:
     reviews:
         build: .
         image: node-challenge:adidas
-        command: npm run start:reviews
+        command: npx sequelize db:migrate npm run start:reviews
         environment:
             NODE_ENV: 'development'
             PORT: '3027'
