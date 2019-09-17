@@ -4,7 +4,7 @@ services:
     reviews:
         build: .
         image: node-challenge:adidas
-        command: npx sequelize db:migrate npm run start:reviews
+        command: npx sequelize db:migrate && npm run start:reviews
         environment:
             NODE_ENV: 'development'
             PORT: '3027'
@@ -43,6 +43,8 @@ services:
         command: --default-authentication-plugin=mysql_native_password
         ports:
           - 3366:3306
+        volumes:
+            - mysql-database:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: rootroot
             MYSQL_DATABASE: product
@@ -53,3 +55,6 @@ services:
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootroot
+
+volumes:
+    apollo-database:
