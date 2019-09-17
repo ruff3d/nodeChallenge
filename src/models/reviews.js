@@ -10,7 +10,8 @@ class Reviews extends Model {
             },
             {
                 sequelize: seq,
-                modelName: "product_reviews",
+                modelName: "Reviews",
+                tableName: "product_reviews"
             });
     }
 
