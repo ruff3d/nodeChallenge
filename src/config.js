@@ -1,5 +1,5 @@
 const MONGO_HOST = process.env.MONGO_HOST || 'mongo';
-const MONGO_PORT = process.env.MONGO_PORT || 15283;
+const MONGO_PORT = process.env.MONGO_PORT || 27017;
 const MONGO_DB_NAME = process.env.MONGO_DB_NAME || 'users';
 const MONGO_USER = process.env.MONGO_USER || 'root';
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || 'rootroot';
@@ -11,7 +11,14 @@ const MYSQL_DB_NAME = process.env.MYSQL_DB_NAME || 'product';
 
 module.exports = {
   MongodbConfig: {
-    database: `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}`
+    database: `mongodb://${MONGO_HOST}:${MONGO_PORT}`,
+    options:  {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      user: MONGO_USER,
+      pass: MONGO_PASSWORD,
+      dbName: MONGO_DB_NAME
+    }
   },
   MysqlConfig: {
     host: MYSQL_HOST,

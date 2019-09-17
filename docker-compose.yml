@@ -4,18 +4,19 @@ services:
     reviews:
         build: .
         image: node-challenge:adidas
-        command: npx sequelize db:migrate && npm run start:reviews
+        command: npm run start:reviews
         environment:
-            NODE_ENV: 'development'
-            PORT: '3027'
-            MONGO_HOST: 'mongo'
-            MONGO_DB_NAME: 'users'
-            MONGO_USER: 'root'
-            MONGO_PASSWORD: 'rootroot'
-            MYSQL_HOST: 'mysql'
-            MYSQL_USER: 'root'
-            MYSQL_PASSWORD: 'rootroot'
-            MYSQL_DB_NAME: 'product'
+            NODE_ENV: development
+            PORT: 3027
+            MONGO_HOST: mongo
+            MONGO_PORT: 27017
+            MONGO_DB_NAME: users
+            MONGO_USER: root
+            MONGO_PASSWORD: rootroot
+            MYSQL_HOST: mysql
+            MYSQL_USER: root
+            MYSQL_PASSWORD: rootroot
+            MYSQL_DB_NAME: product
         ports:
             - 3027:3027
         volumes:
@@ -45,6 +46,7 @@ services:
           - 3366:3306
         volumes:
             - mysql-database:/var/lib/mysql
+            - mongo-database:/data/db
         environment:
             MYSQL_ROOT_PASSWORD: rootroot
             MYSQL_DATABASE: product
@@ -52,9 +54,13 @@ services:
     mongo:
         image: mongo
         restart: always
+        ports:
+          - 27017:27017
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootroot
+            MONGO_INITDB_DATABASE: users
 
 volumes:
-    apollo-database:
+    mysql-database:
+    mongo-database:
