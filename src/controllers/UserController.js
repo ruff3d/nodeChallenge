@@ -44,11 +44,11 @@ module.exports = class UserController {
     }
 
     async setup(req, res) {
-        await Users.addUser({
-            name: 'default',
-            password: await hash('password'),
-            admin: true
-        });
+        await Users.createUser(
+            'default',
+            await hash('password'),
+            true
+        );
 
         res.send({
             success: true,
@@ -57,11 +57,11 @@ module.exports = class UserController {
 
     async addUser(req, res) {
         if (req.body.name && req.body.password)
-            await Users.getUser({
-                name: req.body.name,
-                password: await hash(req.body.password),
-                admin: req.body.admin || false
-            });
+            await Users.getUser(
+                req.body.name,
+                await hash(req.body.password),
+                req.body.admin || false
+            );
 
         res.json({
             success: true

@@ -8,7 +8,7 @@ const UserModel = Model('User', new Schema({
 
 class Users {
     static async createUser(name, password, admin){
-        await UserModel.create({name, password, admin})
+        await UserModel.create({name, password, admin});
     }
 
     static async editUser(name, password, admin){

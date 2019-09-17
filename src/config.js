@@ -11,13 +11,20 @@ const MYSQL_DB_NAME = process.env.MYSQL_DB_NAME || 'product';
 
 module.exports = {
   MongodbConfig: {
-    database: `mongodb://${MONGO_HOST}:${MONGO_PORT}`,
+    connection: `mongodb://${MONGO_HOST}:${MONGO_PORT}`,
     options:  {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       user: MONGO_USER,
       pass: MONGO_PASSWORD,
-      dbName: MONGO_DB_NAME
+      dbName: MONGO_DB_NAME,
+      keepAlive: true,
+      keepAliveInitialDelay: 300000,
+      socketTimeoutMS: 30000,
+      poolSize: 50,
+      reconnectTries: Number.MAX_VALUE,
+      reconnectInterval: 500,
+      autoReconnect: true,
     }
   },
   MysqlConfig: {
