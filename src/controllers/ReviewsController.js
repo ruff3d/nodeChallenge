@@ -6,10 +6,12 @@ module.exports = class ReviewsController {
     }
 
     initRoutes(router) {
-        router.get('/review/:product_id', this.getReview);
-        router.post('/review/', this.addReview);
-        router.put('/review/:product_id', this.editReview);
-        router.delete('/review/:product_id', this.deleteReview);
+        router.get('/review-statistic/:product_id', this.getReviewStatistic);
+        router.get('/reviews/:product_id', this.getReviews);
+        router.post('/review/:product_id', this.addReview);
+        router.put('/review/:id', this.editReview);
+        router.get('/review/:id', this.getReview);
+        router.delete('/review/:id', this.deleteReview);
 
         router.get('/', this.home);
     }
@@ -20,11 +22,10 @@ module.exports = class ReviewsController {
         });
     }
 
-    async getReview(req, res) {
-        let product_id = req.params.product_id;
+    async getReviews(req, res) {
         try {
-            let review = await Reviews.getReview(product_id);
-            res.json(review);
+            let reviews = await Reviews.getReviewsByProductId(req.params.product_id);
+            res.json(reviews);
         } catch {
             res.status(500).json({
                 success: false,
@@ -34,14 +35,13 @@ module.exports = class ReviewsController {
     }
 
     async addReview(req, res) {
-        let input = req.body;
-        let data = {
-            product_id: input.product_id,
-            avg_review_score: input.avg_review_score,
-            num_of_reviews: input.num_of_reviews
-        };
         try {
-            let review = await Reviews.updateReview(data.product_id, data.avg_review_score, data.num_of_reviews);
+            let review = await Reviews.addReview(
+                req.params.product_id,
+                req.body.description,
+                req.body.score,
+                req.decoded.name
+            );
             res.json(review);
         } catch {
             res.status(500).json({
@@ -52,14 +52,12 @@ module.exports = class ReviewsController {
     }
 
     async editReview(req, res) {
-        const input = req.body;
-        let data = {
-            product_id: req.params.product_id,
-            avg_review_score: input.avg_review_score,
-            num_of_reviews: input.num_of_reviews
-        };
         try {
-            let review = await Reviews.updateReview(data.product_id, data.avg_review_score, data.num_of_reviews);
+            let review = await Reviews.updateReview(
+                req.body.id,
+                req.body.description,
+                req.body.score,
+            );
             res.json(review);
         } catch {
             res.status(500).json({
@@ -70,10 +68,38 @@ module.exports = class ReviewsController {
     }
 
     async deleteReview(req, res) {
-        let product_id = req.params.product_id;
         try {
-            await Reviews.deleteReview(product_id);
+            await Reviews.deleteReview(req.params.id);
             res.json();
+        } catch {
+            res.status(500).json({
+                success: false,
+                message: 'Something went wrong!!'
+            });
+        }
+    }
+
+    async getReview(req, res) {
+        try {
+            let review = await Reviews.getReviewById(req.body.id);
+            res.json(review);
+        } catch {
+            res.status(500).json({
+                success: false,
+                message: 'Something went wrong!!'
+            });
+        }
+    }
+
+    async getReviewStatistic(req, res) {
+        try {
+            let reviewStat = await Reviews.getReviewStatisticByProductId(req.params.product_id);
+            let stat = reviewStat.pop().dataValues;
+            res.json({
+                product_id: stat.product_id,
+                num_of_reviews: stat.num_of_reviews,
+                avg_review_score: stat.avg_review_score
+            });
         } catch {
             res.status(500).json({
                 success: false,

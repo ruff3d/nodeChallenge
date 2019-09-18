@@ -1,31 +1,63 @@
 const {Model, sequelize, connection} = require("../store/mysqlStore");
 
 class Reviews extends Model {
-    static async updateReview(product_id, avg_review_score, num_of_reviews){
-        await self.upsert({
-            product_id,
-            avg_review_score,
-            num_of_reviews
+    static async updateReview(id, description, score) {
+        let review = await Reviews.findByPk(id);
+        if (!review) return;
+        review.description = description;
+        review.score = score;
+        review.updatedAt = Date.now();
+        review.save();
+        return review;
+    }
+
+    static async addReview(product_id, description, score, user) {
+        return await Reviews.create({
+            product_id: product_id,
+            description: description,
+            score: score,
+            user: user,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
         });
     }
 
-    static async deleteReview(product_id){
-        await self.destroy({where: {product_id: product_id}});
+    static async deleteReview(id) {
+        return await Reviews.destroy({where: {id: id}});
     }
 
-    static async getReview(product_id){
-        await self.findOne({where: {product_id: product_id}});
+    static async getReviewById(id) {
+        return await Reviews.findByPk(id);
     }
 
-    static async getReviews(){
-        await self.findAll();
+    static async getReviewsByProductId(product_id) {
+        await Reviews.find({where: {product_id: product_id}});
+    }
+
+    static async getAllReviews() {
+        await Reviews.findAll();
+    }
+
+    static async getReviewStatisticByProductId(product_id) {
+        return await Reviews.findAll({
+            limit: 1,
+            where: {product_id: product_id},
+            attributes: [
+                'product_id',
+                [sequelize.fn('COUNT', sequelize.col('id')), 'num_of_reviews'],
+                [sequelize.fn('AVG', sequelize.col('score')), 'avg_review_score']
+            ]
+        });
     }
 }
 
 Reviews.init({
         id: {type: sequelize.INTEGER, primaryKey: true},
-        product_id: sequelize.STRING,
+        product_id: sequelize.INTEGER,
         description: sequelize.STRING,
+        createdAt: sequelize.DATE,
+        updatedAt: sequelize.DATE,
+        score: sequelize.INTEGER,
         user: sequelize.STRING,
     },
     {

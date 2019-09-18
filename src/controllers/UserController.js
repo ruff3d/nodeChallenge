@@ -17,16 +17,15 @@ module.exports = class UserController {
 
     async authenticate(req, res) {
         let user = await Users.getUser(req.body.name);
-        console.log(user.password);
         if (!user) {
             res.status(401).json({
                 success: false,
                 message: `Authentication failed. User ${req.body.name} not found.`
             });
-            // return;
-        } else if (await compare(res.body.password, user.password)) {
+        } else if (await compare(req.body.password, user.password)) {
             const payload = {
-                admin: user.admin
+                admin: user.admin,
+                name: user.name,
             };
             let token = Auth.sign(payload);
             res.json({
@@ -44,12 +43,12 @@ module.exports = class UserController {
 
     async getUsers(req, res) {
         let users = await Users.getUsers();
-        res.json(users);
+        res.json(users.map(user => ({name: user.name, admin: user.admin})));
     }
 
     async getUser(req, res) {
-        let users = await Users.getUser(req.param.name);
-        res.json(users);
+        let user = await Users.getUser(req.param.name);
+        res.json({name: user.name, admin: user.admin});
     }
 
     async setup(req, res) {

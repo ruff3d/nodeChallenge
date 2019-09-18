@@ -1,16 +1,16 @@
-const {token} = require("../config");
+const {JWT} = require("../config");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 class Auth {
     static sign(payload) {
-        return jwt.sign(payload, token.Secret, {
-            expiresIn: token.expiresIn
+        return jwt.sign(payload, JWT.secret, {
+            expiresIn: JWT.expiresIn
         });
     }
 
     static verify(token, callback) {
-        return jwt.verify(token, token.Secret, callback);
+        return jwt.verify(token, JWT.secret, callback);
     }
 }
 
@@ -43,7 +43,7 @@ function authMiddleware(req, res, next)  {
 }
 
 async function compare(value, hash){
-    await bcrypt.compare(value, hash);
+    return await bcrypt.compare(value, hash);
 }
 
 module.exports = {

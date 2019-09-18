@@ -1,4 +1,4 @@
-const {connection, Schema, Model} = require("../store/mongoStore");
+const {Schema, Model} = require("../store/mongoStore");
 
 const UserModel = Model('User', new Schema({
     name: String,
@@ -8,7 +8,7 @@ const UserModel = Model('User', new Schema({
 
 class Users {
     static async createUser(name, password, admin){
-        await UserModel.create({name, password, admin});
+        return await UserModel.create({name, password, admin});
     }
 
     static async editUser(name = null, password = null, admin = null){
@@ -17,18 +17,19 @@ class Users {
         user.password = password || user.password;
         user.admin = admin == null ? user.admin : false;
         user.save();
+        return user;
     }
 
     static async deleteUser(name){
-        await UserModel.where({ name: name }).deleteOne().exec();
+        return await UserModel.where({ name: name }).deleteOne().exec();
     }
 
     static async getUser(name){
-        await UserModel.findOne({name: name}).exec();
+        return await UserModel.findOne({name: name}).exec();
     }
 
     static async getUsers(){
-        await UserModel.find({}).exec();
+        return await UserModel.find({}).exec();
     }
 }
 
