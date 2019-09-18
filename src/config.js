@@ -33,5 +33,8 @@ module.exports = {
     password: MYSQL_PASSWORD,
     database: MYSQL_DB_NAME,
   },
-    Secret: 'supersecret'
+  token: {
+    Secret: 'supersecret',
+    expiresIn: 1440
+  }
 };

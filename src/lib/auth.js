@@ -1,16 +1,16 @@
-const config = require("../config");
+const {token} = require("../config");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 class Auth {
     static sign(payload) {
-        return jwt.sign(payload, config.Secret, {
-            expiresIn: 1440
+        return jwt.sign(payload, token.Secret, {
+            expiresIn: token.expiresIn
         });
     }
 
     static verify(token, callback) {
-        return jwt.verify(token, config.Secret, callback);
+        return jwt.verify(token, token.Secret, callback);
     }
 }
 

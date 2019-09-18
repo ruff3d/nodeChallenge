@@ -1,5 +1,4 @@
 const Reviews = require("../models/reviews");
-const {authMiddleware} = require("../lib/auth");
 
 module.exports = class ReviewsController {
     constructor(router) {
@@ -7,7 +6,6 @@ module.exports = class ReviewsController {
     }
 
     initRoutes(router) {
-        router.use(authMiddleware);
         router.get('/review/:product_id', this.getReview);
         router.post('/review/', this.addReview);
         router.put('/review/:product_id', this.editReview);

@@ -11,24 +11,24 @@ class Users {
         await UserModel.create({name, password, admin});
     }
 
-    static async editUser(name, password, admin){
-        let user = await UserModel.where({ name: name }).findOne();
+    static async editUser(name = null, password = null, admin = null){
+        let user = await UserModel.where({ name: name }).findOne().exec();
         user.name = name || user.name;
         user.password = password || user.password;
-        user.admin = admin || user.admin;
+        user.admin = admin == null ? user.admin : false;
         user.save();
     }
 
     static async deleteUser(name){
-        await UserModel.where({ name: name }).deleteOne()
+        await UserModel.where({ name: name }).deleteOne().exec();
     }
 
     static async getUser(name){
-        await UserModel.where({ name: name }).findOne()
+        await UserModel.findOne({name: name}).exec();
     }
 
     static async getUsers(){
-        await UserModel.findAll();
+        await UserModel.find({}).exec();
     }
 }
 
