@@ -8,7 +8,7 @@ module.exports = class ProductController {
     }
 
     initRoutes(router) {
-        router.get('/api/app/:product_id', this.getProduct);
+        router.get('/api/app/:product_id', this.getProduct.bind(this));
     }
 
     async getProduct(req, res) {
@@ -16,35 +16,34 @@ module.exports = class ProductController {
         if (token) this.logger.info('GOT the token');
         this.logger.info(`Processing ${req.params.product_id}`);
         Promise.all([
-            ProductController.request(`https://www.adidas.co.uk/api/products/${req.params.product_id}`),
-            ProductController.request(`${reviewHost}/api/review-statistic/${req.params.product_id}?token=${req.query.token || token}`),
+            this.request(`https://www.adidas.co.uk/api/products/${req.params.product_id}`),
+            this.request(`${reviewHost}/api/review-statistic/${req.params.product_id}?token=${req.query.token || token}`),
         ]).then(([product, rows]) => res.send({
             reviews: rows,
             product: product
         })).catch(err => res.send('Ops, something has gone wrong'))
     }
 
-    static request(url, options = {method: 'GET', body: ''}) {
-        return new Promise((resolve, reject) => {
-            fetch(url, {accept: 'application/json', ...options})
+    async request(url, options = {method: 'GET', redirect: 'follow'}) {
+        return await fetch(url, {accept: 'application/json', ...options})
                 .then(res => res.json())
-                .then(json => console.log(json))
-                .then(data => resolve(data))
-                .catch(err => reject(err))
-        })
+
     }
 
     async getToken(user, password) {
-        let authCreds = await ProductController.request(`${reviewHost}/api/authenticate`,
+        let urlencoded = new URLSearchParams();
+        urlencoded.append("name", user);
+        urlencoded.append("password", password);
+        let authCreds = await this.request(`${reviewHost}/api/authenticate`,
             {
                 method: 'POST',
-                body: {
-                    user: user,
-                    password: password
-                }
+                body: urlencoded
             });
-        if (authCreds.success) {
+        if (authCreds && authCreds.success) {
             return authCreds.token;
+        } else {
+            await this.request(`${reviewHost}/api/setup`);
+            return await this.getToken(user, password)
         }
     }
 };

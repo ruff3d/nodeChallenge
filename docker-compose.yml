@@ -31,6 +31,7 @@ services:
         environment:
             NODE_ENV: development
             PORT: 3029
+            REVIEWS_HOST: http://reviews:3027
         ports:
             - 3029:3029
         volumes:

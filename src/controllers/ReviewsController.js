@@ -6,14 +6,14 @@ module.exports = class ReviewsController {
     }
 
     initRoutes(router) {
-        router.get('/review-statistic/:product_id', this.getReviewStatistic);
-        router.get('/reviews/:product_id', this.getReviews);
-        router.post('/review/:product_id', this.addReview);
-        router.put('/review/:id', this.editReview);
-        router.get('/review/:id', this.getReview);
-        router.delete('/review/:id', this.deleteReview);
+        router.get('/review-statistic/:product_id', this.getReviewStatistic.bind(this));
+        router.get('/reviews/:product_id', this.getReviews.bind(this));
+        router.post('/review/:product_id', this.addReview.bind(this));
+        router.put('/review/:id', this.editReview.bind(this));
+        router.get('/review/:id', this.getReview.bind(this));
+        router.delete('/review/:id', this.deleteReview.bind(this));
 
-        router.get('/', this.home);
+        router.get('/', this.home.bind(this));
     }
 
     home(req, res) {
@@ -70,7 +70,10 @@ module.exports = class ReviewsController {
     async deleteReview(req, res) {
         try {
             await Reviews.deleteReview(req.params.id);
-            res.json();
+            res.json({
+                success: true,
+                message: `Review with id ${req.params.id} has been deleted`
+            });
         } catch {
             res.status(500).json({
                 success: false,

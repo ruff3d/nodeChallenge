@@ -12,7 +12,7 @@ class Reviews extends Model {
     }
 
     static async addReview(product_id, description, score, user) {
-        return await Reviews.create({
+        return Reviews.create({
             product_id: product_id,
             description: description,
             score: score,
@@ -23,23 +23,23 @@ class Reviews extends Model {
     }
 
     static async deleteReview(id) {
-        return await Reviews.destroy({where: {id: id}});
+        return Reviews.destroy({where: {id: id}});
     }
 
     static async getReviewById(id) {
-        return await Reviews.findByPk(id);
+        return Reviews.findByPk(id);
     }
 
     static async getReviewsByProductId(product_id) {
-        await Reviews.find({where: {product_id: product_id}});
+        return Reviews.findAll({where: {product_id: product_id}});
     }
 
     static async getAllReviews() {
-        await Reviews.findAll();
+        return Reviews.findAll();
     }
 
     static async getReviewStatisticByProductId(product_id) {
-        return await Reviews.findAll({
+        return Reviews.findAll({
             limit: 1,
             where: {product_id: product_id},
             attributes: [

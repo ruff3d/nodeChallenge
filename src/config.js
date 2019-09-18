@@ -10,6 +10,8 @@ const MYSQL_USER = process.env.MYSQL_USER || 'root';
 const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD || 'rootroot';
 const MYSQL_DB_NAME = process.env.MYSQL_DB_NAME || 'product';
 
+const REVIEWS_HOST = process.env.EVIEWS_HOST || 'http://localhost:3027';
+
 module.exports = {
   MongodbConfig: {
     connection: `mongodb://${MONGO_HOST}:${MONGO_PORT}`,
@@ -40,6 +42,6 @@ module.exports = {
     expiresIn: 7440
   },
   ReviewService: {
-    host: 'http://localhost:3027'
+    host: REVIEWS_HOST
   }
 };
