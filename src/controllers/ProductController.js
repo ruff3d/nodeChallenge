@@ -25,12 +25,14 @@ module.exports = class ProductController {
             })).catch(err => res.send('Ops, something has gone wrong'))
     }
 
-    async request(url, options = {method: 'GET', redirect: 'follow'}) {
-        return fetch(url, { headers: {
-            Connection: 'keep-alive',
-                'Accept-Encoding': 'gzip, deflate'
+    async request(url, options = {method: 'GET'}) {
+        return fetch(url, {
+            headers: {
+                'Connection': 'keep-alive',
             },
-            accept: 'application/json', ...options}).then(res => res.json())
+            redirect: 'follow',
+            accept: 'application/json', ...options
+        }).then(res => res.json())
 
     }
 

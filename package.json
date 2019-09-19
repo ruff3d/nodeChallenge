@@ -36,6 +36,7 @@
         "start:product": "node src/product-server.js",
         "dev:reviews": "nodemon -e js,json -w src -x node src/reviews-server.js",
         "dev:product": "nodemon -e js,json -w src -x node src/product-server.js",
+        "migrate:reviews": "npx sequelize db:migrate",
         "test": "mocha --timeout 10000"
     }
 }
