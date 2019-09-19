@@ -16,17 +16,21 @@ module.exports = class ProductController {
         if (token) this.logger.info('GOT the token');
         this.logger.info(`Processing ${req.params.product_id}`);
         Promise.all([
-            this.request(`https://www.adidas.co.uk/api/products/${req.params.product_id}`),
+            // this.request(`https://www.adidas.co.uk/api/products/${req.params.product_id}`),
+            this.request(`https://swapi.co/api/people/1`), // just because fetch is unable to get the response for www.adidas.co.uk
             this.request(`${reviewHost}/api/review-statistic/${req.params.product_id}?token=${req.query.token || token}`),
-        ]).then(([product, rows]) => res.send({
-            reviews: rows,
-            product: product
-        })).catch(err => res.send('Ops, something has gone wrong'))
+        ]).then(([product, rows]) => res.json({
+                reviews: rows,
+                product: product
+            })).catch(err => res.send('Ops, something has gone wrong'))
     }
 
     async request(url, options = {method: 'GET', redirect: 'follow'}) {
-        return await fetch(url, {accept: 'application/json', ...options})
-                .then(res => res.json())
+        return fetch(url, { headers: {
+            Connection: 'keep-alive',
+                'Accept-Encoding': 'gzip, deflate'
+            },
+            accept: 'application/json', ...options}).then(res => res.json())
 
     }
 
