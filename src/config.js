@@ -9,7 +9,7 @@ const MYSQL_PORT = process.env.MYSQL_PORT || 3306;
 const MYSQL_USER = process.env.MYSQL_USER || 'root';
 const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD || 'rootroot';
 const MYSQL_DB_NAME = process.env.MYSQL_DB_NAME || 'product';
-const REVIEWS_HOST = process.env.EVIEWS_HOST || 'http://localhost:3027';
+const REVIEWS_HOST = process.env.REVIEWS_HOST || 'http://localhost:3027';
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // do not verify SSL connection in fetch-node
 
 module.exports = {
